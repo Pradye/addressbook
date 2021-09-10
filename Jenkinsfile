@@ -3,38 +3,58 @@ pipeline {
 
     tools {
         // Install the Maven version configured as "M3" and add it to the path.
-        maven "mymaven"
-        jdk "myjava"
+        maven "Maven-Latest"
     }
 
     stages {
         stage('Compile') {
             steps {
                 // Get some code from a GitHub repository
-                git 'https://github.com/devops-trainer/addressbook.git'
+                git 'https://github.com/Pradye/addressbook.git'
 
-               sh "mvn compile"
-            }
+                // Run Maven on a Unix agent.
+                sh "mvn compile"
+
+                  }
+
+            
         }
-        stage('CodeReview') {
+         stage('CodeReview') {
             steps {
-              sh "mvn pmd:pmd"
-            }
+                // Get some code from a GitHub repository
+                git 'https://github.com/Pradye/addressbook.git'
+
+                // Run Maven on a Unix agent.
+                sh "mvn pmd:pmd"
+
+                  }
+
+            
         }
-        stage('UnitTest') {
+         stage('UnitTest') {
             steps {
-               sh "mvn test"
-            }
+                // Get some code from a GitHub repository
+                git 'https://github.com/Pradye/addressbook.git'
+
+                // Run Maven on a Unix agent.
+                sh "mvn test"
+
+                  }
+
+            
         }
-        stage('MetricCheck') {
+         stage('Package') {
+             agent {label 'linux_slave'}
             steps {
-              sh "mvn cobertura:cobertura -Dcobertura.report.format=xml"
-            }
-        }
-        stage('Package') {
-            steps {
+                // Get some code from a GitHub repository
+                git 'https://github.com/Pradye/addressbook.git'
+
+                // Run Maven on a Unix agent.
                 sh "mvn package"
-            }
+
+                  }
+
+            
         }
     }
 }
